@@ -47,6 +47,6 @@ if __name__ == '__main__':
     movies_df['rating_votes'] = movies_df['rating'] * movies_df['votes']
     movies_df['rating_year_votes'] = movies_df['rating'] * movies_df['year'] * movies_df['votes']
 
-    movies_df.sort_values('rating_year_votes', ascending=False)
+    movies_df.sort_values('rating_year_votes', ascending=False).reset_index()
 
     print('end')
