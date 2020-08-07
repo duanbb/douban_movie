@@ -20,7 +20,8 @@ def get_movie_info(movie_url):
         'name': str(soup_movie.find_all('span', {'property': 'v:itemreviewed'})[0].contents[0]),
         'year': int(soup_movie.find_all('span', {'class': 'year'})[0].contents[0].replace('(', '').replace(')', '')),
         'rating': float(soup_movie.find_all('strong', {'class': 'll rating_num', 'property': 'v:average'})[0].contents[0]),
-        'votes': int(soup_movie.find_all('span', {'property': 'v:votes'})[0].contents[0])
+        'votes': int(soup_movie.find_all('span', {'property': 'v:votes'})[0].contents[0]),
+        'url': movie_url
     }
 
 
@@ -29,7 +30,7 @@ def get_page_info(url):
     soup_page = BeautifulSoup(r_page.text, 'html.parser')  # 'lxml'
     movies = soup_page.find_all('div', {'class': 'title'})
 
-    for i in range(0, len(movies)):
+    for i in range(0, len(movies)):  # 3
         movies_list.append(get_movie_info(movies[i].contents[1].attrs['href']))
         print('No. ' + str(i))
     del i
