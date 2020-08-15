@@ -12,11 +12,14 @@ url_list = [
 ]
 
 
-def get_movie_info(movie_url):
+def get_movie_info(movie_entity):
+    movie_url = movie_entity.contents[1].contents[1].attrs['href']
+
     r_movie = requests.get(movie_url, headers=HEADER)
     soup_movie = BeautifulSoup(r_movie.text, 'html.parser')
 
     return {
+        'date': str(str(movie_entity.contents[3].contents[0]).strip()),
         'name': str(soup_movie.find_all('span', {'property': 'v:itemreviewed'})[0].contents[0]),
         'year': int(soup_movie.find_all('span', {'class': 'year'})[0].contents[0].replace('(', '').replace(')', '')),
         'rating': float(soup_movie.find_all('strong', {'class': 'll rating_num', 'property': 'v:average'})[0].contents[0]),
@@ -28,10 +31,10 @@ def get_movie_info(movie_url):
 def get_page_info(url):
     r_page = requests.get(url, headers=HEADER)
     soup_page = BeautifulSoup(r_page.text, 'html.parser')  # 'lxml'
-    movies = soup_page.find_all('div', {'class': 'title'})
+    movies = soup_page.find_all('div', {'class': 'item-show'})
 
     for i in range(0, len(movies)):  # 3
-        movies_list.append(get_movie_info(movies[i].contents[1].attrs['href']))
+        movies_list.append(get_movie_info(movies[i]))
         print('No. ' + str(i))
     del i
 
